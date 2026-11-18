@@ -2,16 +2,13 @@ import "./globals.css";
 import Providers from "./components/Providers";
 import Header from "./components/Header";
 import CartDrawer from "./components/CartDrawer";
-import { getCatalog } from "../lib/catalog";
 
 export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
   title: "Carpe Diem | Good clothes, very low prices",
   description: "We hunt good clothes from all over the world and sell them at very low prices. New drop every Monday.",
 };
 
-export default async function RootLayout({ children }) {
-  const catalog = await getCatalog();
+export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
@@ -20,7 +17,7 @@ export default async function RootLayout({ children }) {
         <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
       </head>
       <body>
-        <Providers catalog={catalog}>
+        <Providers>
           <Header />
           <main id="top">{children}</main>
           <CartDrawer />

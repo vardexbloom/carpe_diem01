@@ -4,7 +4,7 @@
 // It is written with plain DOM code inside useEffect because it animates on every frame.
 import { useEffect, useRef } from "react";
 import { useShop } from "./Providers";
-import { OUTFITS, defaultSize, rupee } from "../data/products";
+import { OUTFITS, byId, rupee } from "../data/products";
 
 const KX = [1.2, 0.744, 0.496, 0.346, 0.235, 0.15, 0.085];
 const KF = [1.14, 0.89, 0.777, 0.704, 0.651, 0.616, 0.59];
@@ -14,11 +14,9 @@ const KO = [1, 1, 1, 1, 0.86, 0.5, 0];
 const wrap = (x, n) => ((x % n) + n) % n;
 const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
 const two = (v) => String(v).padStart(2, "0");
-const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 
 export default function Outfit() {
-  const { addToCart, toggleWish, toast, wish, byId } = useShop();
-  const has = OUTFITS.some(([t, b]) => byId(t) && byId(b));
+  const { addToCart, toggleWish, toast, wish } = useShop();
   const stageRef = useRef(null);
   const lineRef = useRef(null);
   const railRef = useRef(null);
@@ -27,20 +25,18 @@ export default function Outfit() {
   const btnRef = useRef(null);
   const api = useRef({});
   useEffect(() => {
-    api.current = { addToCart, toggleWish, toast, byId };
+    api.current = { addToCart, toggleWish, toast };
   });
 
   useEffect(() => {
-    if (!stageRef.current) return; // no outfit pieces in the catalogue
-    const OUT = OUTFITS.filter(([t, b]) => byId(t) && byId(b));
     const stage = stageRef.current, line = lineRef.current, rail = railRef.current, roll = rollRef.current, sum = sumRef.current, btn = btnRef.current;
     const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const N = OUT.length;
-    const ITEMS = OUT.flatMap(([t, b]) => [byId(t), byId(b)]);
+    const N = OUTFITS.length;
+    const ITEMS = OUTFITS.flatMap(([t, b]) => [byId(t), byId(b)]);
     const ac = new AbortController();
     const opt = { signal: ac.signal };
 
-    const people = OUT.map(([t, b], i) => {
+    const people = OUTFITS.map(([t, b], i) => {
       const e = document.createElement("div");
       e.className = "of-m";
       e.dataset.i = i;
@@ -59,7 +55,7 @@ export default function Outfit() {
     const cards = ITEMS.map((p, i) => {
       const e = document.createElement("article");
       e.className = "of-card" + (i % 2 ? " alt" : "");
-      e.innerHTML = `<button class="fav" type="button" data-id="${esc(p.id)}" aria-pressed="false" aria-label="Save ${esc(p.name)}"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 20S3.5 15 3.5 9A4.6 4.6 0 0 1 12 6.6 4.6 4.6 0 0 1 20.5 9C20.5 15 12 20 12 20Z"/></svg></button><span class="shot" role="img" aria-label="${esc(p.name)}"></span><div class="meta"><h3>${esc(p.name)}</h3><span>${rupee(p.price)} \u00B7 ${i % 2 ? "Bottom" : "Top"}</span><button class="add" type="button" data-id="${esc(p.id)}" aria-label="Add ${esc(p.name)} to cart"></button></div>`;
+      e.innerHTML = `<button class="fav" type="button" data-id="${p.id}" aria-pressed="false" aria-label="Save ${p.name}"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 20S3.5 15 3.5 9A4.6 4.6 0 0 1 12 6.6 4.6 4.6 0 0 1 20.5 9C20.5 15 12 20 12 20Z"/></svg></button><span class="shot" role="img" aria-label="${p.name}"></span><div class="meta"><h3>${p.name}</h3><span>${rupee(p.price)} \u00B7 ${i % 2 ? "Bottom" : "Top"}</span><button class="add" type="button" data-id="${p.id}" aria-label="Add ${p.name} to cart"></button></div>`;
       e.querySelector(".shot").style.backgroundImage = `url(${p.img})`;
       rail.append(e);
       return e;
@@ -164,14 +160,15 @@ export default function Outfit() {
     }, opt);
     rail.addEventListener("click", (e) => {
       const f = e.target.closest(".fav");
-      if (f) api.current.toggleWish(f.dataset.id);
+      if (f) api.current.toggleWish(+f.dataset.id);
       const a = e.target.closest(".add");
-      if (a) api.current.addToCart(a.dataset.id, defaultSize(api.current.byId(a.dataset.id)));
+      if (a) api.current.addToCart(+a.dataset.id, "M");
     }, opt);
     btn.addEventListener("click", () => {
       const k = cur < 0 ? 0 : cur;
-      for (const id of OUT[k]) api.current.addToCart(id, defaultSize(api.current.byId(id)), true);
-      api.current.toast("Added the full outfit. Change sizes in your cart.");
+      api.current.addToCart(OUTFITS[k][0], "M", true);
+      api.current.addToCart(OUTFITS[k][1], "M", true);
+      api.current.toast("Added the full outfit (size M). Change sizes in your cart.");
     }, opt);
     window.addEventListener("resize", size, opt);
 
@@ -186,14 +183,13 @@ export default function Outfit() {
       rail.innerHTML = "";
       roll.innerHTML = "";
     };
-  }, [byId]);
+  }, []);
 
   // keep the hearts in sync with the saved list
   useEffect(() => {
-    railRef.current?.querySelectorAll(".fav").forEach((b) => b.setAttribute("aria-pressed", String(wish.includes(b.dataset.id))));
+    railRef.current.querySelectorAll(".fav").forEach((b) => b.setAttribute("aria-pressed", String(wish.includes(+b.dataset.id))));
   }, [wish]);
 
-  if (!has) return null;
   return (
     <section id="outfits" className="sec">
       <div className="sec-head">

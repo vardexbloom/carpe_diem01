@@ -1,7 +1,6 @@
 "use client";
-import { useSyncExternalStore } from "react";
-import { useShop } from "./Providers";
-import { RING, rupee } from "../data/products";
+import { useEffect, useState } from "react";
+import { RING, byId, rupee } from "../data/products";
 import { SITE } from "../data/site";
 
 const HERO = [
@@ -22,35 +21,34 @@ function nextDrop() {
 }
 const two = (v) => String(v).padStart(2, "0");
 
-const noop = () => () => {};
-let picked = -1; // one random headline per page visit
-const pickHeadline = () => (picked < 0 ? (picked = Math.floor(Math.random() * HERO.length)) : picked);
-const everySecond = (cb) => {
-  const id = setInterval(cb, 1000);
-  return () => clearInterval(id);
-};
-const nowSecond = () => Math.floor(Date.now() / 1000);
-
 export default function Hero() {
-  const { byId } = useShop();
-  const ring = RING.filter((id) => byId(id));
-  const idx = useSyncExternalStore(noop, pickHeadline, () => 0);
-  const sec = useSyncExternalStore(everySecond, nowSecond, () => null);
-  const left = sec === null ? null : Math.max(0, Math.floor((nextDrop() - new Date(sec * 1000)) / 1000));
-  const v = HERO[idx];
+  const [h, setH] = useState(null);
+  const [left, setLeft] = useState(null);
+
+  useEffect(() => {
+    setH(HERO[Math.floor(Math.random() * HERO.length)]);
+  }, []);
+  useEffect(() => {
+    const tick = () => setLeft(Math.max(0, Math.floor((nextDrop() - new Date()) / 1000)));
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  const v = h || HERO[0];
   const clock = left === null ? "-- : -- : -- : --" : [Math.floor(left / 86400), Math.floor((left % 86400) / 3600), Math.floor((left % 3600) / 60), left % 60].map(two).join(" : ");
 
   return (
     <section className="hero">
       <div className="arc" />
       <div className="hero-body">
-        <div className="badge" key={"b" + idx}>{v.badge}</div>
-        <h1 className="hl" key={"h" + idx}>
+        <div className={"badge" + (h ? "" : " pending")}>{v.badge}</div>
+        <h1 className={"hl" + (h ? "" : " pending")}>
           {v.a}
           <br />
           <span>{v.b}</span>
         </h1>
-        <p key={"p" + idx}>{v.sub}</p>
+        <p className={h ? "" : "pending"}>{v.sub}</p>
         <div className="cta-row">
           <a className="btn acc" href="#shop">
             {v.cta}
@@ -72,10 +70,10 @@ export default function Hero() {
           </div>
         )}
         <div className="orbit" aria-hidden="true">
-          {ring.map((id, k) => {
+          {RING.map((id, k) => {
             const p = byId(id);
             return (
-              <div key={id} className="rc" style={{ backgroundImage: `url(${p.img})`, transform: `rotateY(${k * (360 / ring.length)}deg) translateZ(480px) translateY(${k % 2 ? 24 : -24}px)` }}>
+              <div key={id} className="rc" style={{ backgroundImage: `url(${p.img})`, transform: `rotateY(${k * 60}deg) translateZ(480px) translateY(${k % 2 ? 24 : -24}px)` }}>
                 <span>from {rupee(p.price)}</span>
               </div>
             );

@@ -1,28 +1,27 @@
-// Demo catalogue, used ONLY when no Supabase project is configured (the site then labels itself as demo and checkout is off).
-// The real catalogue lives in the database (see supabase/seed.sql). Product ids are slugs.
+// SAMPLE DATA. Replace with your real pieces. In a later step this moves into the database.
+// Prices, old prices (mrp) and stock are sample numbers. Show an old price only if you really charged it,
+// and "ONLY N LEFT" only from your real stock count.
 export const SIZES = ["S", "M", "L", "XL"];
+export const TYPES = ["Tees", "Jeans", "Shirts", "Long sleeves"];
 
-export const DEMO_PRODUCTS = [
-  { id: "dream-glow-tee", slug: "dream-glow-tee", name: "Dream Glow Tee", type: "Tees", description: "Demo listing. Real fabric, fit and measurement details are added by the owner.", price: 150, mrp: 299, stock: 14, isNew: true, img: "/products/p9.jpg", imgDemo: true, images: [{ url: "/products/p9.jpg", alt: "Dream Glow Tee", demo: true }], variants: [{ size: "S", stock: 2 }, { size: "M", stock: 6 }, { size: "L", stock: 4 }, { size: "XL", stock: 2 }] },
-  { id: "smoke-grey-wide-jeans", slug: "smoke-grey-wide-jeans", name: "Smoke Grey Wide Jeans", type: "Jeans", description: "Demo listing. Real fabric, fit and measurement details are added by the owner.", price: 500, mrp: 999, stock: 9, isNew: true, img: "/products/p3.jpg", imgDemo: true, images: [{ url: "/products/p3.jpg", alt: "Smoke Grey Wide Jeans", demo: true }], variants: [{ size: "S", stock: 1 }, { size: "M", stock: 5 }, { size: "L", stock: 2 }, { size: "XL", stock: 1 }] },
-  { id: "la-raglan-tee", slug: "la-raglan-tee", name: "LA Raglan Tee", type: "Tees", description: "Demo listing. Real fabric, fit and measurement details are added by the owner.", price: 150, mrp: 299, stock: 11, isNew: false, img: "/products/p8.jpg", imgDemo: true, images: [{ url: "/products/p8.jpg", alt: "LA Raglan Tee", demo: true }], variants: [{ size: "S", stock: 2 }, { size: "M", stock: 5 }, { size: "L", stock: 3 }, { size: "XL", stock: 1 }] },
-  { id: "ice-blue-baggy-jeans", slug: "ice-blue-baggy-jeans", name: "Ice Blue Baggy Jeans", type: "Jeans", description: "Demo listing. Real fabric, fit and measurement details are added by the owner.", price: 500, mrp: 999, stock: 7, isNew: false, img: "/products/p7.jpg", imgDemo: true, images: [{ url: "/products/p7.jpg", alt: "Ice Blue Baggy Jeans", demo: true }], variants: [{ size: "S", stock: 1 }, { size: "M", stock: 3 }, { size: "L", stock: 2 }, { size: "XL", stock: 1 }] },
-  { id: "star-layer-long-sleeve", slug: "star-layer-long-sleeve", name: "Star Layer Long Sleeve", type: "Long sleeves", description: "Demo listing. Real fabric, fit and measurement details are added by the owner.", price: 200, mrp: 399, stock: 8, isNew: true, img: "/products/p12.jpg", imgDemo: true, images: [{ url: "/products/p12.jpg", alt: "Star Layer Long Sleeve", demo: true }], variants: [{ size: "S", stock: 1 }, { size: "M", stock: 4 }, { size: "L", stock: 2 }, { size: "XL", stock: 1 }] },
-  { id: "moss-wash-wide-jeans", slug: "moss-wash-wide-jeans", name: "Moss Wash Wide Jeans", type: "Jeans", description: "Demo listing. Real fabric, fit and measurement details are added by the owner.", price: 500, mrp: 999, stock: 2, isNew: false, img: "/products/p13.jpg", imgDemo: true, images: [{ url: "/products/p13.jpg", alt: "Moss Wash Wide Jeans", demo: true }], variants: [{ size: "S", stock: 0 }, { size: "M", stock: 2 }, { size: "L", stock: 0 }, { size: "XL", stock: 0 }] },
-  { id: "olive-wash-tee", slug: "olive-wash-tee", name: "Olive Wash Tee", type: "Tees", description: "Demo listing. Real fabric, fit and measurement details are added by the owner.", price: 150, mrp: 299, stock: 16, isNew: false, img: "/products/p5.jpg", imgDemo: true, images: [{ url: "/products/p5.jpg", alt: "Olive Wash Tee", demo: true }], variants: [{ size: "S", stock: 3 }, { size: "M", stock: 7 }, { size: "L", stock: 4 }, { size: "XL", stock: 2 }] },
-  { id: "sand-wash-baggy-jeans", slug: "sand-wash-baggy-jeans", name: "Sand Wash Baggy Jeans", type: "Jeans", description: "Demo listing. Real fabric, fit and measurement details are added by the owner.", price: 500, mrp: 999, stock: 6, isNew: false, img: "/products/p1.jpg", imgDemo: true, images: [{ url: "/products/p1.jpg", alt: "Sand Wash Baggy Jeans", demo: true }], variants: [{ size: "S", stock: 1 }, { size: "M", stock: 4 }, { size: "L", stock: 1 }, { size: "XL", stock: 0 }] },
-  { id: "rugby-stripe-polo", slug: "rugby-stripe-polo", name: "Rugby Stripe Polo", type: "Shirts", description: "Demo listing. Real fabric, fit and measurement details are added by the owner.", price: 150, mrp: 349, stock: 3, isNew: false, img: "/products/p10.jpg", imgDemo: true, images: [{ url: "/products/p10.jpg", alt: "Rugby Stripe Polo", demo: true }], variants: [{ size: "S", stock: 0 }, { size: "M", stock: 3 }, { size: "L", stock: 0 }, { size: "XL", stock: 0 }] },
-  { id: "star-patch-jeans", slug: "star-patch-jeans", name: "Star Patch Jeans", type: "Jeans", description: "Demo listing. Real fabric, fit and measurement details are added by the owner.", price: 500, mrp: 999, stock: 5, isNew: false, img: "/products/p2.jpg", imgDemo: true, images: [{ url: "/products/p2.jpg", alt: "Star Patch Jeans", demo: true }], variants: [{ size: "S", stock: 1 }, { size: "M", stock: 3 }, { size: "L", stock: 1 }, { size: "XL", stock: 0 }] },
+export const PRODUCTS = [
+  { id: 9, name: "Dream Glow Tee", type: "Tees", price: 150, mrp: 299, stock: 14, isNew: true, img: "/products/p9.jpg" },
+  { id: 3, name: "Smoke Grey Wide Jeans", type: "Jeans", price: 500, mrp: 999, stock: 9, isNew: true, img: "/products/p3.jpg" },
+  { id: 8, name: "LA Raglan Tee", type: "Tees", price: 150, mrp: 299, stock: 11, isNew: false, img: "/products/p8.jpg" },
+  { id: 7, name: "Ice Blue Baggy Jeans", type: "Jeans", price: 500, mrp: 999, stock: 7, isNew: false, img: "/products/p7.jpg" },
+  { id: 12, name: "Star Layer Long Sleeve", type: "Long sleeves", price: 200, mrp: 399, stock: 8, isNew: true, img: "/products/p12.jpg" },
+  { id: 13, name: "Moss Wash Wide Jeans", type: "Jeans", price: 500, mrp: 999, stock: 2, isNew: false, img: "/products/p13.jpg" },
+  { id: 5, name: "Olive Wash Tee", type: "Tees", price: 150, mrp: 299, stock: 16, isNew: false, img: "/products/p5.jpg" },
+  { id: 1, name: "Sand Wash Baggy Jeans", type: "Jeans", price: 500, mrp: 999, stock: 6, isNew: false, img: "/products/p1.jpg" },
+  { id: 10, name: "Rugby Stripe Polo", type: "Shirts", price: 150, mrp: 349, stock: 3, isNew: false, img: "/products/p10.jpg" },
+  { id: 2, name: "Star Patch Jeans", type: "Jeans", price: 500, mrp: 999, stock: 5, isNew: false, img: "/products/p2.jpg" },
 ];
 
-// Which pieces appear in the hero ring, hanging rail and outfit section (by product slug).
-// Pieces missing from the live catalogue are skipped automatically.
-export const OUTFITS = [["dream-glow-tee", "smoke-grey-wide-jeans"], ["la-raglan-tee", "ice-blue-baggy-jeans"], ["star-layer-long-sleeve", "moss-wash-wide-jeans"], ["olive-wash-tee", "sand-wash-baggy-jeans"], ["rugby-stripe-polo", "star-patch-jeans"]]; // [top, bottom]
-export const RAIL = ["la-raglan-tee", "olive-wash-tee", "rugby-stripe-polo", "moss-wash-wide-jeans", "star-patch-jeans", "dream-glow-tee"];
-export const RING = ["dream-glow-tee", "star-patch-jeans", "la-raglan-tee", "moss-wash-wide-jeans", "star-layer-long-sleeve", "olive-wash-tee"];
+export const OUTFITS = [[9, 3], [8, 7], [12, 13], [5, 1], [10, 2]]; // [top id, bottom id]
+export const RAIL = [8, 5, 10, 13, 2, 9]; // pieces on the hanging rail
+export const RING = [9, 2, 8, 13, 12, 5]; // pieces on the hero ring
 
+export const byId = (id) => PRODUCTS.find((p) => p.id === id);
+export const off = (p) => Math.round((1 - p.price / p.mrp) * 100);
 export const rupee = (n) => "\u20B9" + Number(n).toLocaleString("en-IN");
-export const off = (p) => (p.mrp && p.mrp > p.price ? Math.round((1 - p.price / p.mrp) * 100) : 0);
-export const tagOf = (p) => (p.stock <= 0 ? "SOLD OUT" : p.stock <= 3 ? `ONLY ${p.stock} LEFT` : p.isNew ? "NEW" : "");
-export const stockOf = (p, size) => p.variants.find((v) => v.size === size)?.stock ?? 0;
-export const defaultSize = (p) => (stockOf(p, "M") > 0 ? "M" : p.variants.find((v) => v.stock > 0)?.size ?? null);
+export const tagOf = (p) => (p.stock <= 3 ? `ONLY ${p.stock} LEFT` : p.isNew ? "NEW" : "");

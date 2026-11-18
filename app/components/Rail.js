@@ -1,9 +1,9 @@
 "use client";
 import { useShop } from "./Providers";
-import { RAIL, defaultSize, rupee, tagOf } from "../data/products";
+import { RAIL, byId, rupee, tagOf } from "../data/products";
 
 export default function Rail() {
-  const { addToCart, byId } = useShop();
+  const { addToCart } = useShop();
   return (
     <section id="rail" className="sec">
       <div className="sec-head">
@@ -13,7 +13,7 @@ export default function Rail() {
       <div className="rail-wrap">
         <div className="rail-bar" />
         <div className="rail-scroll">
-          {RAIL.filter((id) => byId(id)).map((id, k) => {
+          {RAIL.map((id, k) => {
             const p = byId(id);
             const tag = tagOf(p);
             const rid = "rail-" + id;
@@ -41,7 +41,7 @@ export default function Rail() {
                       className="sb"
                       onClick={(e) => {
                         e.preventDefault();
-                        addToCart(p.id, defaultSize(p));
+                        addToCart(p.id, "M");
                       }}
                     >
                       Add to cart

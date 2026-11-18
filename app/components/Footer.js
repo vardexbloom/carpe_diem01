@@ -1,11 +1,12 @@
 "use client";
-import { useSyncExternalStore } from "react";
+import { useEffect, useState } from "react";
 import { SITE } from "../data/site";
 
-const noop = () => () => {};
-
 export default function Footer() {
-  const year = useSyncExternalStore(noop, () => String(new Date().getFullYear()), () => "");
+  const [year, setYear] = useState("");
+  useEffect(() => {
+    setYear(String(new Date().getFullYear()));
+  }, []);
   return (
     <footer className="foot">
       <div>
